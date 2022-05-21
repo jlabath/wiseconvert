@@ -1,0 +1,4 @@
+"TransferWise ID",Date,Amount,Currency,Description,"Payment Reference","Running Balance","Exchange From","Exchange To","Exchange Rate","Payer Name","Payee Name","Payee Account Number",Merchant,"Card Last Four Digits","Card Holder Full Name",Attachment,Note,"Total fees"
+CARD-191806186,28-04-2022,-4.51,CAD,"Card transaction of 4.51 CAD issued by Apple.com/bill 866-111-7753",,197.51,,,,,,,"Apple.com/bill 866-111-7753",1234,"John Doe",,,0.00
+TRANSFER-282952681,20-03-2022,200.00,CAD,"Topped up account",,202.02,,,,,,,,,,,,0.42
+CARD-171701989,19-03-2022,-38.00,CAD,"Card transaction of 28.23 USD issued by Shell/shell ROSSFORD",,2.02,CAD,USD,0.79343,,,,"Shell/shell ROSSFORD",1234,"John Doe",,,0.18
