@@ -73,10 +73,29 @@ pub(crate) fn make_iter(
         let txt = nd_dt(&tx.date).format(FMT).to_string();
         body.append(&mut plain_event("DTEND".into(), txt.into(), false));
     }
-    for tx in transactions {
+    let mut total = Decimal::ZERO;
+    for tx in transactions.iter() {
+        total += &tx.amount;
         body.append(&mut tx.as_events());
     }
     body.push(Event::End(BytesEnd::owned("BANKTRANLIST".into())));
+    //do ledgerbal
+    body.push(Event::Start(BytesStart::owned_name("LEDGERBAL")));
+    body.append(&mut plain_event(
+        "BALAMT".into(),
+        total.to_string().into(),
+        false,
+    ));
+    let date_str: String = {
+        let date = match latest {
+            Some(tx) => nd_dt(&tx.date),
+            None => now,
+        };
+        date.format(FMT).to_string()
+    };
+    body.append(&mut plain_event("DTASOF".into(), date_str.into(), false));
+
+    body.push(Event::End(BytesEnd::owned("LEDGERBAL".into())));
 
     let footer = vec![
         Event::End(BytesEnd::owned("STMTRS".into())),
