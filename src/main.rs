@@ -3,6 +3,7 @@ use clap::{Arg, Command};
 
 use quick_xml::Writer;
 use std::fs::File;
+mod currency;
 mod event;
 mod transaction;
 
@@ -33,6 +34,13 @@ fn main() -> Result<()> {
                 .help("Output file to write OFX into (stdout will be used if ommitted)")
                 .takes_value(true),
         )
+        .arg(
+            Arg::new("currency")
+                .long("currency")
+                .help("currency for the output OFX")
+                .default_value("CAD")
+                .takes_value(true),
+        )
         .get_matches();
 
     //read input
@@ -43,6 +51,7 @@ fn main() -> Result<()> {
     let iter = event::make_iter(
         matches.value_of("account").unwrap_or("wise001"),
         transactions,
+        matches.value_of("currency").unwrap_or("CAD").try_into()?,
     );
     //write out output
     let fout = make_out_file(matches.value_of("output file"))?;

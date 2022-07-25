@@ -1,4 +1,4 @@
-use crate::transaction::Transaction;
+use crate::{currency::Currency, transaction::Transaction};
 use chrono::{DateTime, Datelike, NaiveDate, TimeZone, Utc};
 use quick_xml::events::{BytesDecl, BytesEnd, BytesStart, BytesText, Event};
 use rust_decimal::Decimal;
@@ -10,6 +10,7 @@ const FMT: &str = "%Y%m%d%H%M%S%.3f[%z:%Z]";
 pub(crate) fn make_iter(
     account: &str,
     transactions: Vec<Transaction>,
+    currency: Currency,
 ) -> impl Iterator<Item = Event<'static>> {
     let now: DateTime<Utc> = Utc::now();
     let fmt_now = now.format(FMT);
@@ -55,7 +56,7 @@ pub(crate) fn make_iter(
         Event::End(BytesEnd::owned("STATUS".into())),
         Event::Start(BytesStart::owned_name("STMTRS")),
         Event::Start(BytesStart::owned_name("CURDEF")),
-        Event::Text(BytesText::from_escaped_str("CAD")), //hardcoded ???
+        Event::Text(BytesText::from_escaped_str(currency.to_string())),
         Event::End(BytesEnd::owned("CURDEF".into())),
         Event::Start(BytesStart::owned_name("BANKACCTFROM")),
         Event::Start(BytesStart::owned_name("ACCTID")),
